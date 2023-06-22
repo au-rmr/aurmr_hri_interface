@@ -72,7 +72,8 @@ export interface Pose2D {
 export interface RetryGraspGoal {
     camera_image: ROSCompressedImage,
     failed_x: number,
-    failed_y: number
+    failed_y: number,
+    object_asin: string
 }
 
 export interface RetryGraspResult {

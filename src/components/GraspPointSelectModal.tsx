@@ -13,14 +13,14 @@ import Konva from 'konva';
 import { Stage, Layer, Circle, Rect, Text, Image } from 'react-konva';
 import { Pose2D } from '../ros/messages';
 
-const CIRCLE_RADIUS = 20;
+const CIRCLE_RADIUS = 15;
 
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 800,
+  width: 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -37,6 +37,7 @@ interface GraspPointSelectModalProps {
     onAbort: () => void,
     onTargetSelected: (position: Pose2D) => void,
     imageData: string,
+    productName: string
 }
 
 export default function GraspPointSelectModal(props: GraspPointSelectModalProps) {
@@ -80,13 +81,13 @@ export default function GraspPointSelectModal(props: GraspPointSelectModalProps)
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <Stage width={800} height={window.innerHeight - 200} style={{cursor: 'none'}}>
+            <Stage width={400} height={370} style={{cursor: 'none'}}>
                 <Layer onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onMouseMove={onMouseMove} onMouseDown={onMouseDown}>
-                    <Image image={image} x={-150} y={0} />
+                    <Image image={image} x={0} y={0} />
                     <Circle radius={CIRCLE_RADIUS} fill='red' stroke='black' strokeWidth={3} opacity={0.4} x={305} y={250} />
                     {showGoalCircle ? (
                         <Circle radius={CIRCLE_RADIUS}
-                                fill='white' 
+                                fill='white'
                                 stroke='black' 
                                 strokeWidth={3} 
                                 opacity={0.75} 
@@ -105,6 +106,9 @@ export default function GraspPointSelectModal(props: GraspPointSelectModalProps)
                     ) : null}
                 </Layer>
             </Stage>
+            <Typography id="modal-modal-title" variant="h6" component="h2" style={{fontSize:'11px'}}>
+                {props.productName}
+            </Typography>
             <Button onClick={props.onRetry} style={retryBtnStyle} variant="contained" color="success" startIcon={<RefreshIcon />}>
                 Retry
             </Button>

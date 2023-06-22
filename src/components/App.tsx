@@ -1,10 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import ROSLIB from "roslib";
 
 import Loading from './Loading';
 import GraspPointSelectModal from './GraspPointSelectModal';
 import { RetryGraspGoal, RetryGraspResult, Pose2D } from '../ros/messages';
+import { GET_ALL_PROD } from '../graphql/query';
 
 import './App.css';
 import { request } from 'http';
@@ -19,6 +21,11 @@ export default function App() {
     // Action server goal and result from state
     const [regraspGoal, setRegraspGoal] = useState<RetryGraspGoal | undefined>(undefined);
     const [regraspResult, setRegraspResult] = useState<RetryGraspResult | undefined>(undefined);
+
+    const [productDict, setProductDict] = useState<any>({});
+
+    
+    const { data: prodData, loading: prodLoading, error: prodError } = useQuery(GET_ALL_PROD);
 
     // Connect to ROS
     useEffect(() => {
@@ -41,6 +48,7 @@ export default function App() {
             setRosError('Error connecting to ROS websocket server');
         });
 
+        console.log("Creating /aurmr/hri/retry_grasp")
         setRosRetryServer(new ROSLIB.SimpleActionServer({
             ros: ros,
             serverName: '/aurmr/hri/retry_grasp',
@@ -50,7 +58,7 @@ export default function App() {
 
     // Initialize retry action server callbacks
     useEffect(() => {
-        if (!rosRetryServer) return;
+        if (!rosRetryServer || !rosConnected) return;
 
         /* @ts-ignore */
         rosRetryServer.on('goal', (goalMessage: RetryGraspGoal) => {
@@ -63,7 +71,19 @@ export default function App() {
             console.log("Cancelled...");
             rosRetryServer.setPreempted();
         });
-    }, [rosRetryServer]);
+    }, [rosRetryServer, rosConnected]);
+
+    useEffect(() => {
+        if (prodLoading || !prodData) return;
+
+        const prodDict: any = {};
+        for (let i = 0; i < prodData.getAllProducts.length; i++) {
+            prodDict[prodData.getAllProducts[i].asin] = prodData.getAllProducts[i];
+        }
+        setProductDict(prodDict);
+        console.log(prodDict);
+        // 
+    }, [prodData, prodLoading]);
 
     // Render error or loading screen if necessary
     if (rosError) {
@@ -72,6 +92,11 @@ export default function App() {
     if (!rosConnected) {
         return <Loading label="Connecting to robot..." />;
     }
+    if (prodLoading || productDict.length === 0) {
+        return <Loading label="Loading product data..." />;
+    }
+
+    
 
     // Render waiting screen if no requests are in the queue
     if (!regraspGoal) {
@@ -82,6 +107,8 @@ export default function App() {
             </div>
         );
     }
+
+    console.log(regraspGoal);
 
     return (
         <GraspPointSelectModal
@@ -101,6 +128,7 @@ export default function App() {
                     y: pos.y
                 })
             }}
+            productName={productDict[""+regraspGoal.object_asin+""].name}
             />
     );
     

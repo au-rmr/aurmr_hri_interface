@@ -3,6 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/App';
 
+import {
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject
+} from '@apollo/client';
+
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: 'http://aurmr2.cs.washington.edu:4000'
+});
+
 // Add some helpers to the window for easily retrieving params from the URL
 declare global {
   interface Window { 
@@ -35,6 +47,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <div className="App">
-      <App />
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
     </div>
 );
