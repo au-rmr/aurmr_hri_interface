@@ -12,7 +12,6 @@ import {
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: process.env.REACT_APP_GRAPHQL_HOST
   uri: `http://${process.env.REACT_APP_GRAPHQL_HOST}:4000`
 });
 
