@@ -12,7 +12,8 @@ import {
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: 'http://aurmr2.cs.washington.edu:4000'
+  uri: process.env.REACT_APP_GRAPHQL_HOST
+  uri: `http://${process.env.REACT_APP_GRAPHQL_HOST}:4000`
 });
 
 // Add some helpers to the window for easily retrieving params from the URL
