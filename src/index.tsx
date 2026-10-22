@@ -12,7 +12,7 @@ import {
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: 'http://aurmr2.cs.washington.edu:4000'
+  uri: 'http://localhost:4000'
 });
 
 // Add some helpers to the window for easily retrieving params from the URL

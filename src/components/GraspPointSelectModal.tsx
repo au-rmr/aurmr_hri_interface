@@ -84,7 +84,7 @@ export default function GraspPointSelectModal(props: GraspPointSelectModalProps)
             <Stage width={400} height={370} style={{cursor: 'none'}}>
                 <Layer onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onMouseMove={onMouseMove} onMouseDown={onMouseDown}>
                     <Image image={image} x={0} y={0} />
-                    <Circle radius={CIRCLE_RADIUS} fill='red' stroke='black' strokeWidth={3} opacity={0.4} x={305} y={250} />
+                    {/* <Circle radius={CIRCLE_RADIUS} fill='red' stroke='black' strokeWidth={3} opacity={0.4} x={305} y={250} /> */}
                     {showGoalCircle ? (
                         <Circle radius={CIRCLE_RADIUS}
                                 fill='white'
