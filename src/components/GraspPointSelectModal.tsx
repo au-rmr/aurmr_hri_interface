@@ -20,7 +20,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 700,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -81,10 +81,10 @@ export default function GraspPointSelectModal(props: GraspPointSelectModalProps)
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <Stage width={400} height={370} style={{cursor: 'none'}}>
+            <Stage width={700} height={500} style={{cursor: 'none'}}>
                 <Layer onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onMouseMove={onMouseMove} onMouseDown={onMouseDown}>
                     <Image image={image} x={0} y={0} />
-                    <Circle radius={CIRCLE_RADIUS} fill='red' stroke='black' strokeWidth={3} opacity={0.4} x={305} y={250} />
+                    {/* <Circle radius={CIRCLE_RADIUS} fill='red' stroke='black' strokeWidth={3} opacity={0.4} x={305} y={250} /> */}
                     {showGoalCircle ? (
                         <Circle radius={CIRCLE_RADIUS}
                                 fill='white'
